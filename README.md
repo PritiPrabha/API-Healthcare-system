@@ -110,3 +110,5 @@ pip install Flask flask-mysqldb flask-bcrypt flask-jwt-extended flask-cors
 python pro.py
 python doc.py
 python query.py
+
+![image alt](https://github.com/PritiPrabha/API-Healthcare-system/blob/main/after_login.jpg?raw=true)
