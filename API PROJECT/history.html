@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Patient Dashboard</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 30px;
+    }
+
+    table {
+      width: 90%;
+      margin: 0 auto;
+      border-collapse: collapse;
+      background-color: #ffffff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    thead {
+      background-color: #2980b9;
+      color: white;
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: center;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    tbody tr:hover {
+      background-color: #dff0ff;
+      transition: background-color 0.3s ease;
+    }
+
+    th {
+      font-size: 1.1em;
+    }
+
+    td {
+      font-size: 1em;
+    }
+
+    @media (max-width: 768px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      thead {
+        display: none;
+      }
+
+      tr {
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+      }
+
+      td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+      }
+
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 15px;
+        width: 45%;
+        padding-left: 10px;
+        font-weight: bold;
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>PATIENT DASHBOARD</h1>
+  <table id="history">
+    <thead>
+      <tr>
+        <th>Patient Name</th>
+        <th>Patient Problem</th>
+        <th>Doctor Consulted</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const token = sessionStorage.getItem("access_token");
+    fetch("http://localhost:5000/userhistory", {
+      method: 'GET',
+      headers: { 'Authorization': 'Bearer ' + token }
+    })
+    .then(response => response.json())
+    .then(data => {
+      const tableBody = document.querySelector("#history tbody");
+      tableBody.innerHTML = '';
+      data.forEach(pro => {
+        const row = `
+          <tr>
+            <td data-label="Patient Name">${pro.pname}</td>
+            <td data-label="Patient Problem">${pro.kw || "N/A"}</td>
+            <td data-label="Doctor Consulted">${pro.dname}</td>
+          </tr>`;
+        tableBody.innerHTML += row;
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!-- register.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Arial Black';
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 20px;
+      padding: 2rem;
+      width: 350px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+      color: white;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    input {
+      width: 100%;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border: none;
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+    input::placeholder {
+      color: #ddd;
+    }
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: white;
+      color: #333;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .switch {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+    .switch a {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Register</h2>
+    <form id="register">
+      <input type="text" id="dname" placeholder="Name" required />
+      <input type="text" id="dspec" placeholder="Specialist" required />
+      <input type="tel" id="dphn" placeholder="Phone Number" required pattern="[0-9]{10}" />
+      <input type="email" id="demail" placeholder="Email" required />
+      <input type="password" id="dpassw" placeholder="Password" required />
+      <input type="text" id="dkw" placeholder="Keyword" required />
+      <button type="submit">Register</button>
+    </form>
+    <div class="switch">
+      Already have an account? <a href="logindoc.html">Login here</a>
+    </div>
+  </div>
+  <script>
+    const form = document.getElementById("register");
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const data = {
+        dname: document.getElementById("dname").value,
+        dspec: document.getElementById("dspec").value,
+        dphn: document.getElementById("dphn").value,
+        demail: document.getElementById("demail").value,
+        dpassw: document.getElementById("dpassw").value,
+        dkw: document.getElementById("dkw").value,
+
+      };
+      console.log(data);
+      fetch("http://localhost:5000/userregister", {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }).then(res => res.json())
+        .then(data => {
+          if (data.message === "success") {
+            alert("Registration successful! Please login.");
+            window.location.href = "logindoc.html";
+          } else {
+            alert("Registration failed: " + data.message);
+          }
+        })
+        .catch(error => {
+          console.error("Error:", error);
+          alert("Something went wrong. Please try again.");
+        });
+    });
+  </script>
+</body>
+</html>

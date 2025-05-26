@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Health Query</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f8f9;
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+    }
+
+    form#query {
+      background: #fff;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+
+    form label {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+      display: block;
+      color: #333;
+    }
+
+    form select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      font-size: 1rem;
+    }
+
+    form button {
+      background-color: #007bff;
+      color: white;
+      padding: 10px;
+      border: none;
+      width: 100%;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    form button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <form id="query">
+    <label for="problem">Problem:</label>
+    <select id="problem" name="problem">
+      <option value="lumps">Lumps</option>
+      <option value="head ache">Head ache</option>
+      <option value="skin rashes">Skin problems</option>
+      <option value="breathing issues">Breathing issues</option>
+      <option value="heart attack">Heart problem</option>
+      <option value="gas">Gas problem</option>
+      <option value="Fat">Fat</option>
+      <option value="children health">Children Problems</option>
+      <option value="swelling">Swelling or Urine Problems</option>
+    </select>
+    <button type="submit">Get Answer</button>
+  </form>
+
+  <script>
+    const token = sessionStorage.getItem("access_token");
+    const form = document.getElementById("query");
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      
+      const problem = document.getElementById("problem").value;
+
+      fetch("http://localhost:5000/tellproblem", {
+        method: 'POST',
+        headers: {
+          'Authorization': "Bearer " + token,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ problem })
+      })
+      .then(response => response.json())
+      .then(data => {
+        alert(data.message);
+      })
+      .catch(error => {
+        console.error("Error:", error);
+        alert("Something went wrong. Please try again.");
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Profile Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #89f7fe, #66a6ff);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-image: url('rel.png');
+      background-size: 700px;
+      /* background-repeat: no-repeat; */
+      /* background-position: center; */
+    }
+
+    /* Navigation Bar */
+    .navbar {
+      background-color: rgba(0, 0, 0, 0.6);
+      color: white;
+      width: 100%;
+      padding: 15px 30px;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .navbar h2 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #ffeb3b;
+    }
+
+    h1 {
+      margin-top: 100px;
+      color: black;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    #profile {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(12px);
+      padding: 2rem;
+      border-radius: 20px;
+      color: black;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      width: 300px;
+    }
+
+    #profile p {
+      font-size: 1.2rem;
+      margin: 0.5rem 0;
+    }
+
+    @media (max-width: 600px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .nav-links a {
+        margin: 5px 0;
+      }
+
+      #profile {
+        width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+ 
+  <div class="navbar">
+    <h2>Health Care Management - Patient</h2>
+    <div class="nav-links">
+      <a href="history.html">View History</a>
+      <a href="query.html">Consult</a>
+    </div>
+  </div>
+
+  <h1>Profile Page</h1>
+
+  <div id="profile">Loading...</div>
+
+  <script>
+    const token = sessionStorage.getItem("access_token");
+
+    if (!token) {
+      alert("Please login first.");
+      window.location.href = "loginpage.html";
+    } else {
+      fetch("http://localhost:5000/profile1", {
+        method: 'GET',
+        headers: {
+          "Authorization": "Bearer " + token
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("profile").innerHTML =
+          `<p><strong>Patient ID:</strong> ${data.patientid}</p>
+           <p><strong>Patient Name:</strong> ${data.patientname}</p>
+           <p><strong>Patient Place:</strong> ${data.patientplace}</p>
+           <p><strong>Patient Email:</strong> ${data.patientemail}</p>
+           <p><strong>Patient Phone:</strong> ${data.patientphn}</p>`;
+      })
+      .catch(err => {
+        console.error("Error:", err);
+        document.getElementById("profile").innerHTML = "<p>Failed to load profile.</p>";
+      });
+    }
+
+    
+  </script>
+
+</body>
+</html>

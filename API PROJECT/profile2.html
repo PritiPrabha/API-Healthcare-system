@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Profile Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #89f7fe, #66a6ff);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-image: url('rel.png');
+      background-size: 700px;
+    }
+
+    h1 {
+      color: white;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    #profile {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(12px);
+      padding: 2rem;
+      border-radius: 20px;
+      color: black;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      width: 300px;
+    }
+
+    #profile p {
+      font-size: 1.2rem;
+      margin: 0.5rem 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Health care management-Doctor</h1>
+  <h1>Profile Page</h1>
+  <div id="profile">Loading...</div>
+
+  <script>
+    const token = sessionStorage.getItem("access_token");
+
+    if (!token) {
+      alert("Please login first.");
+      window.location.href = "logindoc.html";
+    } else {
+      fetch("http://localhost:5000/profile2", {
+        method: 'GET',
+        headers: {
+          "Authorization": "Bearer " + token
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        document.getElementById("profile").innerHTML =
+          `<p><strong>Doctor ID:</strong> ${data.doctorid}</p>
+           <p><strong>Doctor Name:</strong> ${data.doctorname}</p>
+           <p><strong>Doctor Spec:</strong> ${data.doctorspec}</p>
+           <p><strong>Doctor Email:</strong> ${data.doctoremail}</p>
+           <p><strong>Doctor Phone:</strong> ${data.doctorphn}</p>`;
+      })
+      .catch(err => {
+        console.error("Error:", err);
+        document.getElementById("profile").innerHTML = "<p>Failed to load profile.</p>";
+      });
+    }
+  </script>
+</body>
+</html>
