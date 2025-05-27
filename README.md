@@ -111,4 +111,5 @@ python pro.py
 python doc.py
 python query.py
 
-![image alt](https://github.com/PritiPrabha/API-Healthcare-system/blob/main/after_login.jpg?raw=true)
+![After Login Screenshot](https://github.com/PritiPrabha/API-Healthcare-system/blob/main/after_login.jpg?raw=true)
+
